@@ -8,11 +8,15 @@ const controller = require('./middleware/controller')
 const errorHandler = require('./middleware/error-handler')
 const notFound = require('./middleware/not-found')
 
+const { index } = require('./controllers/sources')
+
 module.exports = app
 
 app.use(bodyParser.json())
 app.use(normalizeBody())
 app.use(logRequest())
+
+app.post('/sources', controller(index))
 
 app.use(respond('json'))
 app.use(notFound())
