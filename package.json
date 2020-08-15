@@ -24,6 +24,14 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-chai-expect": "^2.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.1",
     "mkdirp": "^1.0.4",
     "nodemon": "^2.0.4",
     "slug": "^3.3.4"
@@ -31,5 +39,29 @@
   "adr": {
     "path": "./docs/architecture_decision_records",
     "template": "./docs/templates/architecture-decision-record.md"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": false,
+      "es2020": true,
+      "mocha": true
+    },
+    "extends": [
+      "standard",
+      "plugin:chai-expect/recommended",
+      "plugin:promise/recommended",
+      "plugin:security/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 11,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "chai-expect",
+      "promise",
+      "security",
+      "mocha"
+    ],
+    "rules": {}
   }
 }
