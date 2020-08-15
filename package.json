@@ -26,17 +26,40 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-spies": "^1.0.0",
     "eslint": "^7.6.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-chai-expect": "^2.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
     "mkdirp": "^1.0.4",
+    "mocha": "^8.1.0",
     "nodemon": "^2.0.4",
-    "slug": "^3.3.4"
+    "nyc": "^15.1.0",
+    "sinon": "^9.0.2",
+    "slug": "^3.3.4",
+    "supertest": "^4.0.2"
+  },
+  "mocha": {
+    "diff": true,
+    "reporter": "spec",
+    "slow": 75,
+    "timeout": 2000,
+    "ui": "bdd",
+    "parallel": false,
+    "recursive": true
+  },
+  "nyc": {
+    "reporter": [
+      "html",
+      "text"
+    ]
   },
   "adr": {
     "path": "./docs/architecture_decision_records",
@@ -52,7 +75,8 @@
       "standard",
       "plugin:chai-expect/recommended",
       "plugin:promise/recommended",
-      "plugin:security/recommended"
+      "plugin:security/recommended",
+      "plugin:mocha/recommended"
     ],
     "parserOptions": {
       "ecmaVersion": 11,
@@ -64,6 +88,17 @@
       "security",
       "mocha"
     ],
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "./src/**/*.test.js"
+        ],
+        "rules": {
+          "no-unused-expressions": "off",
+          "security/detect-non-literal-fs-filename": "off"
+        }
+      }
+    ]
   }
 }
