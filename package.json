@@ -1,0 +1,16 @@
+{
+  "name": "aggrex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "repl": "NODE_PATH=./src node --use-strict",
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "~": "file:.",
+  },
+  "devDependencies": {
+  },
+}
