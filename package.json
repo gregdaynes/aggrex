@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "adr": "node --use-strict ./scripts/architecture-decision-record.js",
     "repl": "NODE_PATH=./src node --use-strict",
   },
   "author": "",
@@ -12,5 +13,11 @@
     "~": "file:.",
   },
   "devDependencies": {
+    "mkdirp": "^1.0.4",
+    "slug": "^3.3.4",
+  },
+  "adr": {
+    "path": "./docs/architecture_decision_records",
+    "template": "./docs/templates/architecture-decision-record.md"
   },
 }
