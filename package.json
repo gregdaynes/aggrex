@@ -5,19 +5,31 @@
   "main": "src/index.js",
   "scripts": {
     "adr": "node --use-strict ./scripts/architecture-decision-record.js",
-    "repl": "NODE_PATH=./src node --use-strict",
+    "dev": "NODE_ENV=development NODE_PATH=./src DEBUG=aggrex:* nodemon ./src/server.js",
+    "fix": "npx eslint --fix ./src",
+    "playground": "NODE_ENV=development NODE_PATH=./src nodemon ./playground.js",
+    "repl": "NODE_PATH=./src node --inspect --use-strict",
+    "test": "NODE_ENV=test NODE_PATH=./src npx mocha --use-strict --recursive \"./src/**/*.test.js\"",
+    "test:coverage": "nyc npm run test",
+    "test:coverage:watch": "nodemon --exec nyc --reporter=lcov --reporter=text npm run test",
+    "test:integration": "npm run test -- --grep '#integration'",
+    "test:unit": "npm run test -- --grep '#unit'",
+    "test:file": "DEBUG=*:debug* NODE_ENV=test NODE_PATH=./src npx mocha --use-strict --exit"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "~": "file:.",
+    "debug": "^4.1.1",
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "mkdirp": "^1.0.4",
-    "slug": "^3.3.4",
+    "nodemon": "^2.0.4",
+    "slug": "^3.3.4"
   },
   "adr": {
     "path": "./docs/architecture_decision_records",
     "template": "./docs/templates/architecture-decision-record.md"
-  },
+  }
 }
