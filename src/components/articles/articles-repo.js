@@ -11,16 +11,30 @@ const {
   useCollection
 } = require('lib/database')
 
+const collectionName = 'articles'
+
 module.exports = {
+  allArticles,
   createArticle,
   findArticleById,
   findArticleBySlug,
   destroyArticle
 }
 
-const collectionName = 'articles'
+function allArticles () {
+  debug('allArticles')
 
-async function createArticle (article) {
+  const connection = connect()
+
+  return connection
+    .then(useDatabase(databaseName))
+    .then(useCollection(collectionName))
+    .then(find({}))
+    .then(handleFoundResult())
+    .finally(close(connection))
+}
+
+function createArticle (article) {
   debug('createArticle', article)
 
   const connection = connect()
@@ -33,7 +47,7 @@ async function createArticle (article) {
     .finally(close(connection))
 }
 
-async function findArticleById (id) {
+function findArticleById (id) {
   debug('findArticleById', id)
 
   const query = { _id: id }
@@ -48,7 +62,7 @@ async function findArticleById (id) {
     .finally(close(connection))
 }
 
-async function findArticleBySlug (slug) {
+function findArticleBySlug (slug) {
   debug('findArticleBySlug', slug)
 
   const query = { slug }

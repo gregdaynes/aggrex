@@ -6,6 +6,7 @@ const schema = require('./article-schema')
 const repo = require('./articles-repo')
 
 module.exports = {
+  all,
   create,
   findById,
   findBySlug,
@@ -14,7 +15,7 @@ module.exports = {
 }
 
 function handleError (...args) {
-  return (err) => {
+  return function (err) {
     debug('error', ...args, err)
 
     if (err.validation) {
@@ -24,6 +25,15 @@ function handleError (...args) {
 
     throw new Error(err)
   }
+}
+
+function all (repoFn = repo.allArticles) {
+  debug('all')
+
+  return repoFn()
+    .then(res => res.map(schema))
+    .then(res => Promise.all(res))
+    .catch(handleError('all'))
 }
 
 function create (article, repoFn = repo.createArticle) {

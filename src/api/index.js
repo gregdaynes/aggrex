@@ -10,7 +10,8 @@ const controller = require('./middleware/controller')
 const errorHandler = require('./middleware/error-handler')
 const notFound = require('./middleware/not-found')
 
-const { index } = require('./controllers/sources')
+const { index: articleIndex } = require('./controllers/articles')
+const { index: sourceIndex } = require('./controllers/sources')
 
 module.exports = app
 
@@ -20,7 +21,8 @@ app.use(normalizeRequest())
 app.use(normalizeBody())
 app.use(normalizeQuery())
 
-app.get('/sources', controller(index))
+app.get('/articles', controller(articleIndex))
+app.get('/sources', controller(sourceIndex))
 
 app.use(respond('json'))
 app.use(notFound())
