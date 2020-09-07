@@ -1,6 +1,5 @@
 const debug = require('lib/debug')('component:source:repo')
 const { databaseName } = require('lib/env')
-const { pipeWith } = require('lib/utils')
 
 const {
   close,

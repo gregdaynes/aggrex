@@ -9,10 +9,10 @@ module.exports = {
 }
 
 function index (req, res) {
-  debug('index', req.body)
+  debug('index', req.data)
 
-  const ids = req.body.ids
-  const enabled = req.body.enabled
+  const ids = req.data.ids
+  const enabled = fetchParam('enabled', req) === 'true'
 
   const sources = (ids.length)
     ? findByIds(ids)
@@ -22,6 +22,14 @@ function index (req, res) {
     .then(filterEnabled(enabled))
     .then(mapFn(stringifyObjectId()))
     .then(setResponseData(res))
+}
+
+function fetchParam (paramName, req) {
+  return [
+    req.query[`${paramName}`],
+    req.body[`${paramName}`],
+    req.data[`${paramName}`]
+  ].filter(Boolean).reverse()[0]
 }
 
 function findByIds (ids) {

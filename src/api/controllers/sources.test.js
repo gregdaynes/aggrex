@@ -17,7 +17,7 @@ describe('API Source Controller', function () {
         const expectedSources = [toJSON(source)]
 
         return request(app)
-          .post('/api/sources')
+          .get('/api/sources')
           .set('Accept', 'application/json')
           .expect('Content-Type', /json/)
           .expect(200)
@@ -36,8 +36,8 @@ describe('API Source Controller', function () {
         const expectedSources = [toJSON(source)]
 
         return request(app)
-          .post('/api/sources')
-          .send({ ids: [] })
+          .get('/api/sources')
+          .query({ ids: [] })
           .set('Accept', 'application/json')
           .expect('Content-Type', /json/)
           .expect(200)
@@ -61,8 +61,8 @@ describe('API Source Controller', function () {
         const expectedSources = [toJSON(source)]
 
         return request(app)
-          .post('/api/sources')
-          .send({ ids: [source._id] })
+          .get('/api/sources')
+          .query({ ids: source._id.toString() })
           .set('Accept', 'application/json')
           .expect('Content-Type', /json/)
           .expect(200)
@@ -87,9 +87,9 @@ describe('API Source Controller', function () {
         const expectedSources = [toJSON(source)]
 
         return request(app)
-          .post('/api/sources')
+          .get('/api/sources')
           .set('Accept', 'application/json')
-          .send({ enabled: true })
+          .query({ enabled: true })
           .expect('Content-Type', /json/)
           .expect(200)
           .then(response =>

@@ -6,11 +6,12 @@ function normalizeBodyInit () {
   return normalizeBody
 }
 
-function normalizeBody (req, res, next) {
+function normalizeBody (req, _res, next) {
   debug(req.body)
+  if (!req.body) req.body = {}
 
-  req.body.ids = [...req.body.ids || []]
-  req.body.slugs = [...req.body.slugs || []]
+  req.data.ids = [...req.data.ids || [], ...req.body.ids || []]
+  req.data.slugs = [...req.data.slugs || [], ...req.body.slugs || []]
 
   next()
 }
