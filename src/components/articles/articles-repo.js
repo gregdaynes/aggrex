@@ -18,6 +18,7 @@ module.exports = {
   createArticle,
   findArticleById,
   findArticleBySlug,
+  findArticlesBySourceId,
   destroyArticle
 }
 
@@ -66,6 +67,21 @@ function findArticleBySlug (slug) {
   debug('findArticleBySlug', slug)
 
   const query = { slug }
+
+  const connection = connect()
+
+  return connection
+    .then(useDatabase(databaseName))
+    .then(useCollection(collectionName))
+    .then(find(query))
+    .then(handleFoundResult())
+    .finally(close(connection))
+}
+
+function findArticlesBySourceId (sourceId) {
+  debug('findArticlesBySourceId', sourceId)
+
+  const query = { sourceId }
 
   const connection = connect()
 

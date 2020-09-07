@@ -18,8 +18,13 @@ function normalizeQuery (req, _res, next) {
     ? req.query.slugs.split(',')
     : []
 
+  const sources = req.query.sources
+    ? req.query.sources.split(',')
+    : []
+
   req.data.ids = [...req.data.ids || [], ...ids]
   req.data.slugs = [...req.data.slugs || [], ...slugs]
+  req.data.sources = [...req.data.sources || [], ...sources]
 
   next()
 }

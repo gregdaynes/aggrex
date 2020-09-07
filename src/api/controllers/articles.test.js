@@ -78,7 +78,7 @@ describe('API Source Controller', function () {
     context('only enabled', function () {
       it('returns a list articles that are enabled', async function () {
         await create({
-          title: 'test-2',
+          title: 'test-1',
           link: 'https://example.com',
           sourceId: 'sourceId-123',
           status: false
@@ -96,6 +96,33 @@ describe('API Source Controller', function () {
           .get('/api/articles')
           .set('Accept', 'application/json')
           .query({ status: true })
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .then(response =>
+            expect(response.body).to.deep.equal({ data: expectedArticles }))
+      })
+    })
+
+    context('only specific sources', function () {
+      it('returns a list articles that are from the specified source', async function () {
+        await create({
+          title: 'test-1',
+          link: 'https://example.com',
+          sourceId: 'sourceId-122'
+        })
+
+        const source = await create({
+          title: 'test-2',
+          link: 'https://example.com',
+          sourceId: 'sourceId-123'
+        })
+
+        const expectedArticles = [toJSON(source)]
+
+        return request(app)
+          .get('/api/articles')
+          .set('Accept', 'application/json')
+          .query({ sources: source.sourceId.toString() })
           .expect('Content-Type', /json/)
           .expect(200)
           .then(response =>

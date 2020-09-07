@@ -1,7 +1,8 @@
 const debug = require('lib/debug')('http:api:controller:articles')
 const {
   all,
-  findById
+  findById,
+  findBySource
 } = require('components/articles')
 
 module.exports = {
@@ -11,29 +12,52 @@ module.exports = {
 function index (req, res) {
   debug('index', req.data)
 
-  const ids = req.data.ids
+  const ids = fetchParam('ids', req)
   const status = fetchParam('status', req) === 'true'
+  const sources = fetchParam('sources', req, {})
 
-  const articles = (ids.length)
-    ? findByIds(ids)
-    : all()
+  let articles
+  if (ids.length) {
+    articles = findByIds(ids)
+  } else if (sources.length) {
+    articles = findBySources(sources)
+  } else {
+    articles = all()
+  }
 
   return Promise.resolve(articles)
-    .then(filterStatus(status))
+    .then(maybe(status, filterStatus(status)))
     .then(mapFn(stringifyObjectId()))
     .then(setResponseData(res))
 }
 
-function fetchParam (paramName, req) {
-  return [
+function fetchParam (paramName, req, defaultValue = undefined) {
+  const param = [
     req.query[`${paramName}`],
     req.body[`${paramName}`],
     req.data[`${paramName}`]
   ].filter(Boolean).reverse()[0]
+
+  return param || defaultValue
+}
+
+function maybe (param, func) {
+  return function (res) {
+    if (!param) return res
+
+    return func(res)
+  }
 }
 
 function findByIds (ids) {
   const data = ids.flatMap(id => findById(id))
+  return Promise.all(data)
+    .then(flatten())
+}
+
+function findBySources (sources) {
+  const data = sources.flatMap(source => findBySource(source))
+
   return Promise.all(data)
     .then(flatten())
 }

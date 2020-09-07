@@ -10,6 +10,7 @@ module.exports = {
   create,
   findById,
   findBySlug,
+  findBySource,
   findBy,
   destroy
 }
@@ -63,6 +64,22 @@ function findBySlug (slug, repoFn = repo.findArticleBySlug) {
   return toString(slug)
     .then(res => repoFn(res))
     .catch(handleError('findBySlug', slug))
+}
+
+function findBySource (source, repoFn = repo.findArticlesBySourceId) {
+  debug('findBySource', source)
+
+  if (!source) return Promise.resolve()
+
+  const sourceId = source._id
+    ? source._id.toString()
+    : source
+
+  return toObjectId(sourceId)
+    .then(res => repoFn(res))
+    .then(res => res.map(schema))
+    .then(res => Promise.all(res))
+    .catch(handleError('findBySource', source))
 }
 
 function findBy ({ id, slug }) {
