@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development NODE_PATH=./src DEBUG=aggrex:* nodemon --inspect ./src/server.js",
     "fix": "npx eslint --fix ./src",
     "markdown": "node --use-strict ./scripts/markdown.js",
-    "playground": "NODE_ENV=development NODE_PATH=./src nodemon --insepct ./playground.js",
+    "playground": "NODE_ENV=development NODE_PATH=./src nodemon --inspect ./playground.js",
     "readme": "npm run markdown docs/templates/README.md README.md",
     "repl": "NODE_PATH=./src node --inspect --use-strict",
     "test": "NODE_ENV=test NODE_PATH=./src npx mocha --use-strict --recursive \"./src/**/*.test.js\"",
