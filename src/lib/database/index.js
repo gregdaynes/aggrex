@@ -12,7 +12,10 @@ module.exports = {
   connect,
   destroy,
   find,
+  findOrCreate,
   insertOne,
+  updateOne,
+  upsert,
   useDatabase,
   useCollection
 }
@@ -35,8 +38,22 @@ function find (query) {
   return (collection) => collection.find(query)
 }
 
+function findOrCreate (query, obj) {
+  const options = { upsert: true, returnOriginal: false }
+  return (collection) => collection.findOneAndUpdate(query, { $set: obj }, options)
+}
+
 function insertOne (obj) {
   return (collection) => collection.insertOne(obj)
+}
+
+function updateOne (obj) {
+  return (collection) => collection.updateOne(obj)
+}
+
+function upsert (query, obj) {
+  const options = { upsert: true }
+  return (collection) => collection.updateOne(query, { $set: obj }, options)
 }
 
 function useDatabase (databaseName) {
