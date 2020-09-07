@@ -16,7 +16,7 @@ module.exports = {
 
 function handleError (...args) {
   return function (err) {
-    debug('error', err)
+    debug('error', ...args, err)
 
     if (err.validation) {
       const message = err.errors.map(error => error.message).join('; ')
@@ -30,7 +30,10 @@ function handleError (...args) {
 function all (repoFn = repo.allSources) {
   debug('all')
 
-  return repoFn().catch(handleError('all'))
+  return repoFn()
+    .then(res => res.map(schema))
+    .then(res => Promise.all(res))
+    .catch(handleError('all'))
 }
 
 function create (source, repoFn = repo.createSource) {
