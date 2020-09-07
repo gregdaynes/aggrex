@@ -2,7 +2,7 @@ const app = require('app')
 const debug = require('lib/debug')('http:server')
 const { httpPort, httpMaxConnectionTime } = require('lib/env')
 
-app.listen(httpPort, () => {
+const server = app.listen(httpPort, () => {
   debug(`App started on port ${httpPort}`)
 })
 
@@ -18,7 +18,7 @@ function shutdownGracefully (err, callback) {
   debug('error', err, err.stack)
 
   debug('Shutting down gracefully, waiting for connections to close')
-  app.close(() => callback())
+  server.close(() => callback())
 
   setTimeout(() => {
     debug('Connections not closed in time, forced shutdown')
