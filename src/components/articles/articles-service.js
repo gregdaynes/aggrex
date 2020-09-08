@@ -8,6 +8,7 @@ const repo = require('./articles-repo')
 module.exports = {
   all,
   create,
+  fetch,
   findById,
   findBySlug,
   findBySource,
@@ -44,6 +45,15 @@ function create (article, repoFn = repo.createArticle) {
     .then(res => schema(res))
     .then(res => repoFn(res))
     .catch(handleError('create', article))
+}
+
+function fetch (article, repoFn = repo.fetchArticle) {
+  debug('fetch', article)
+
+  return Promise.resolve(article)
+    .then(res => schema(res))
+    .then(res => repoFn(res))
+    .catch(handleError('fetch', article))
 }
 
 function findById (id, repoFn = repo.findArticleById) {

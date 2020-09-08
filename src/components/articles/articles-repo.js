@@ -6,6 +6,7 @@ const {
   connect,
   destroy,
   find,
+  findOrCreate,
   insertOne,
   useDatabase,
   useCollection
@@ -16,6 +17,7 @@ const collectionName = 'articles'
 module.exports = {
   allArticles,
   createArticle,
+  fetchArticle,
   findArticleById,
   findArticleBySlug,
   findArticlesBySourceId,
@@ -45,6 +47,21 @@ function createArticle (article) {
     .then(useCollection(collectionName))
     .then(insertOne(article))
     .then(handleCreateResult())
+    .finally(close(connection))
+}
+
+function fetchArticle (article) {
+  debug('fetchArticle', article)
+
+  const query = { slug: article.slug }
+
+  const connection = connect()
+
+  return connection
+    .then(useDatabase(databaseName))
+    .then(useCollection(collectionName))
+    .then(findOrCreate(query, article))
+    .then(handleFindOrCreateResult())
     .finally(close(connection))
 }
 
@@ -121,4 +138,9 @@ const handleDeleteResult = () =>
 const handleFoundResult = () =>
   function handleFoundResult (results) {
     return results.toArray()
+  }
+
+const handleFindOrCreateResult = () =>
+  function ({ value }) {
+    return value
   }
